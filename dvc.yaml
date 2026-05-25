@@ -1,0 +1,38 @@
+stages:
+  prepare:
+    cmd: python scripts/prepare_data.py
+    deps:
+      - data/insurance_data.csv
+    outs:
+      - data/processed/cleaned_data.csv
+    metrics:
+      - data/processed/data_quality_report.json:
+          cache: false
+
+  eda:
+    cmd: jupyter nbconvert --to notebook --execute notebooks/01_eda.ipynb
+    deps:
+      - data/processed/cleaned_data.csv
+      - notebooks/01_eda.ipynb
+    outs:
+      - notebooks/01_eda.ipynb
+
+  hypothesis_testing:
+    cmd: jupyter nbconvert --to notebook --execute notebooks/02_hypothesis_testing.ipynb
+    deps:
+      - data/processed/cleaned_data.csv
+      - notebooks/02_hypothesis_testing.ipynb
+    outs:
+      - notebooks/02_hypothesis_testing.ipynb
+
+  modeling:
+    cmd: jupyter nbconvert --to notebook --execute notebooks/03_modeling.ipynb
+    deps:
+      - data/processed/cleaned_data.csv
+      - notebooks/03_modeling.ipynb
+    outs:
+      - notebooks/03_modeling.ipynb
+      - models/best_model.pkl
+    metrics:
+      - models/model_metrics.json:
+          cache: false
