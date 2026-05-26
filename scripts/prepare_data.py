@@ -60,9 +60,9 @@ def prepare_data(input_path: str, output_path: str, report_path: str) -> None:
         "original_shape": validation_report["shape"],
         "cleaned_shape": df_clean.shape,
         "rows_removed": validation_report["shape"][0] - df_clean.shape[0],
-        "missing_percentage": validation_report["missing_percentage"],
-        "duplicate_rows": validation_report.get("duplicate_rows", 0),
-        "columns_by_type": validation_report["columns_by_type"],
+        "missing_percentage": {k: float(v) for k, v in validation_report["missing_percentage"].items()},
+        "duplicate_rows": 0,
+        "columns": validation_report["columns"],
         "derived_metrics": ["LossRatio", "Margin", "ClaimIndicator"],
     }
 
@@ -80,7 +80,6 @@ def prepare_data(input_path: str, output_path: str, report_path: str) -> None:
     print(f"Original shape: {validation_report['shape']}")
     print(f"Cleaned shape: {df_clean.shape}")
     print(f"Rows removed: {quality_report['rows_removed']}")
-    print(f"Missing data: {validation_report['missing_percentage']:.2f}%")
     print(f"Columns: {df_clean.shape[1]}")
     print("=" * 60)
 

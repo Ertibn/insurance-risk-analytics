@@ -260,7 +260,7 @@ def test_risk_by_zipcode(df: pd.DataFrame, alpha: float = 0.05) -> Dict:
     Parameters
     ----------
     df : pd.DataFrame
-        Input data with PostalCode and TotalClaims columns.
+        Input data with ZipCode and TotalClaims columns.
     alpha : float, default=0.05
         Significance level.
 
@@ -276,7 +276,7 @@ def test_risk_by_zipcode(df: pd.DataFrame, alpha: float = 0.05) -> Dict:
 
     result = tester.chi_squared_test(
         df_test,
-        "PostalCode",
+        "ZipCode",
         "HasClaim",
         test_name="Risk Differences Across Zip Codes",
     )
@@ -291,7 +291,7 @@ def test_margin_by_zipcode(df: pd.DataFrame, alpha: float = 0.05) -> Dict:
     Parameters
     ----------
     df : pd.DataFrame
-        Input data with PostalCode, TotalPremium, and TotalClaims columns.
+        Input data with ZipCode, TotalPremium, and TotalClaims columns.
     alpha : float, default=0.05
         Significance level.
 
@@ -306,9 +306,9 @@ def test_margin_by_zipcode(df: pd.DataFrame, alpha: float = 0.05) -> Dict:
     df_test["Margin"] = df_test["TotalPremium"] - df_test["TotalClaims"]
 
     # Select top 2 zip codes for comparison
-    top_zipcodes = df_test["PostalCode"].value_counts().head(2).index
-    group_a = df_test[df_test["PostalCode"] == top_zipcodes[0]]["Margin"].values
-    group_b = df_test[df_test["PostalCode"] == top_zipcodes[1]]["Margin"].values
+    top_zipcodes = df_test["ZipCode"].value_counts().head(2).index
+    group_a = df_test[df_test["ZipCode"] == top_zipcodes[0]]["Margin"].values
+    group_b = df_test[df_test["ZipCode"] == top_zipcodes[1]]["Margin"].values
 
     result = tester.t_test(
         group_a,
